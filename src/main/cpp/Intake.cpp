@@ -16,29 +16,127 @@ void Intake::OnStart() {
 
 void Intake::OnUpdate(units::second_t dt) {
 
+  // switch (_state) {
+
+  //   case IntakeState::kAdjust:
+  //   {
+  //     // if (_config.intakeSensor->Get() == false && _config.passSensor->Get() == false) { 
+  //     //   _setVoltage = 4_V;
+  //     // } else
+  //     if (_config.intakeSensor->Get() == false && _config.passSensor->Get() == true) { 
+  //       SetState(IntakeState::kHold);
+  //     } else if (_config.intakeSensor->Get() == true && _config.passSensor->Get() == true) {
+  //       SetState(IntakeState::kIdle); 
+  //     }
+  //   } 
+  //   case IntakeState::kIdle: 
+  //   {
+  //     if (_config.intakeSensor->Get() == false && _config.passSensor->Get() == true) { 
+  //       SetState(IntakeState::kHold);
+  //     // } else if (_config.intakeSensor->Get() == false && _config.passSensor->Get() == false) { 
+  //     //   SetState(IntakeState::kAdjust);
+  //     }
+  //     _stringStateName = "Idle";
+  //     _pid.Reset();
+  //     _setVoltage = 0_V;
+  //     _recordNote = false;
+  //   } 
+  //   break;
+
+  //   case IntakeState::kRaw: 
+  //   {
+  //     _stringStateName = "Raw";
+  //     _pid.Reset();
+  //     _setVoltage = _rawVoltage;
+  //   } 
+  //   break;
+
+  //   case IntakeState::kEject: 
+  //   {
+  //     if (_config.intakeSensor->Get() == true && _config.passSensor->Get() == true) {
+  //       SetState(IntakeState::kIdle); 
+  //     // } else if (_config.intakeSensor->Get() == false && _config.passSensor->Get() == false) { 
+  //     //   SetState(IntakeState::kAdjust);
+  //     }
+  //     _stringStateName = "Eject";
+  //     _setVoltage = 4_V;
+  //     _pid.Reset();
+  //   } 
+  //   break;
+
+  //   case IntakeState::kHold: 
+  //   {
+  //     if (_config.intakeSensor->Get() == true && _config.passSensor->Get() == true) {
+  //       SetState(IntakeState::kIdle);
+  //     }
+  //     // } else if (_config.intakeSensor->Get() == false && _config.passSensor->Get() == false) { 
+  //     //   SetState(IntakeState::kAdjust);
+  //     // }
+  //     _pid.SetSetpoint(0);
+  //     units::volt_t pidCalculate =
+  //         // units::volt_t{_pid.Calculate(_config.IntakeGearbox.encoder->GetEncoderAngularVelocity().value())};
+  //     // units::volt_t pidCalculate =
+  //         units::volt_t{_pidPosition.Calculate(_config.IntakeGearbox.encoder->GetEncoderPosition().value())};
+  //     _setVoltage = pidCalculate;
+  //     _stringStateName = "Hold";
+  //   }
+  //   break;
+
+  //   case IntakeState::kIntake: 
+  //   {
+  //     if (_config.intakeSensor->Get() == false && _config.passSensor->Get() == true) {
+  //       SetState(IntakeState::kHold);
+  //     // } else if (_config.intakeSensor->Get() == false && _config.passSensor->Get() == false) { 
+  //     //   SetState(IntakeState::kAdjust);
+  //     }
+  //     _stringStateName = "Intake";
+  //     _setVoltage = -4_V; 
+  //   } 
+  //   break;
+
+  //   case IntakeState::kPass: 
+  //   {
+  //     if (_config.intakeSensor->Get() == true && _config.passSensor->Get() == true) {
+  //       SetState(IntakeState::kIdle);
+  //     } 
+
+  //     if (!_recordNote) {
+  //       _noteShot ++;
+  //       _recordNote = true;
+  //     }
+
+  //     _stringStateName = "Pass";
+  //     _setVoltage = -4_V;
+  //   }
+  //   break;
+  // }
+
   switch (_state) {
 
     case IntakeState::kAdjust:
     {
-      if (_config.intakeSensor->Get() == true && _config.passSensor->Get() == true) { 
-        _setVoltage = -4_V;
-      } else if (_config.intakeSensor->Get() == true && _config.passSensor->Get() == false) { 
+      // // if (_config.intakeSensor->Get() == false && _config.passSensor->Get() == false) { 
+      // //   _setVoltage = 4_V;
+      // // } else
+      if (_config.intakeSensor->Get() == false && _config.passSensor->Get() == true) { 
         SetState(IntakeState::kHold);
-      } else if (_config.intakeSensor->Get() == false && _config.passSensor->Get() == false) {
+      } else if (_config.intakeSensor->Get() == true && _config.passSensor->Get() == true) {
         SetState(IntakeState::kIdle); 
       }
     } 
+    break;
+    
     case IntakeState::kIdle: 
     {
-      if (_config.intakeSensor->Get() == true && _config.passSensor->Get() == false) { 
+      if (_config.intakeSensor->Get() == false && _config.passSensor->Get() == true) { 
         SetState(IntakeState::kHold);
-      } else if (_config.intakeSensor->Get() == true && _config.passSensor->Get() == true) { 
+      } else if (_config.intakeSensor->Get() == false && _config.passSensor->Get() == false) { 
         SetState(IntakeState::kAdjust);
       }
-      _stringStateName = "Idle";
-      _pid.Reset();
-      _setVoltage = 0_V;
-      _recordNote = false;
+      // _stringStateName = "Idle";
+      // _pid.Reset();
+      // _setVoltage = 0_V;
+      // _recordNote = false;
     } 
     break;
 
@@ -52,62 +150,66 @@ void Intake::OnUpdate(units::second_t dt) {
 
     case IntakeState::kEject: 
     {
-      if (_config.intakeSensor->Get() == false && _config.passSensor->Get() == false) {
+      if (_config.intakeSensor->Get() == true && _config.passSensor->Get() == true) {
         SetState(IntakeState::kIdle); 
-      } else if (_config.intakeSensor->Get() == true && _config.passSensor->Get() == true) { 
+      } else if (_config.intakeSensor->Get() == false && _config.passSensor->Get() == false) { 
         SetState(IntakeState::kAdjust);
       }
-      _stringStateName = "Eject";
-      _setVoltage = -4_V;
-      _pid.Reset();
+      // _stringStateName = "Eject";
+      // _setVoltage = 4_V;
+      // _pid.Reset();
     } 
     break;
 
     case IntakeState::kHold: 
     {
-      if (_config.intakeSensor->Get() == false && _config.passSensor->Get() == false) {
-        SetState(IntakeState::kIdle);
-      } else if (_config.intakeSensor->Get() == true && _config.passSensor->Get() == true) { 
+      if (_config.intakeSensor->Get() == true && _config.passSensor->Get() == true) {
+        _state = IntakeState::kIdle;
+      } else if (_config.intakeSensor->Get() == false && _config.passSensor->Get() == false) {
         SetState(IntakeState::kAdjust);
       }
-      _pid.SetSetpoint(0);
-      units::volt_t pidCalculate =
-          // units::volt_t{_pid.Calculate(_config.IntakeGearbox.encoder->GetEncoderAngularVelocity().value())};
+      // // } else if (_config.intakeSensor->Get() == false && _config.passSensor->Get() == false) { 
+      // //   SetState(IntakeState::kAdjust);
+      // // }
+      // _pid.SetSetpoint(0);
       // units::volt_t pidCalculate =
-          units::volt_t{_pidPosition.Calculate(_config.IntakeGearbox.encoder->GetEncoderPosition().value())};
-      _setVoltage = pidCalculate;
-      _stringStateName = "Hold";
+      //     // units::volt_t{_pid.Calculate(_config.IntakeGearbox.encoder->GetEncoderAngularVelocity().value())};
+      // // units::volt_t pidCalculate =
+      //     units::volt_t{_pidPosition.Calculate(_config.IntakeGearbox.encoder->GetEncoderPosition().value())};
+      // _setVoltage = pidCalculate;
+      // _stringStateName = "Hold";
     }
     break;
 
     case IntakeState::kIntake: 
     {
-      if (_config.intakeSensor->Get() == true && _config.passSensor->Get() == false) {
-        SetState(IntakeState::kHold);
-      } else if (_config.intakeSensor->Get() == true && _config.passSensor->Get() == true) { 
-        SetState(IntakeState::kAdjust);
+      if (_config.intakeSensor->Get() == false && _config.passSensor->Get() == true) {
+        _state = IntakeState::kHold;
+      } else if (_config.intakeSensor->Get() == false && _config.passSensor->Get() == false) { 
+        _state = IntakeState::kAdjust;
       }
-      _stringStateName = "Intake";
-      _setVoltage = 4_V; 
+      // _stringStateName = "Intake";
+      // _setVoltage = -4_V; 
     } 
     break;
 
     case IntakeState::kPass: 
     {
-      if (_config.intakeSensor->Get() == false && _config.passSensor->Get() == false) {
+      if (_config.intakeSensor->Get() == true && _config.passSensor->Get() == true) {
         SetState(IntakeState::kIdle);
       } 
 
-      if (!_recordNote) {
-        _noteShot ++;
-        _recordNote = true;
-      }
+      // if (!_recordNote) {
+      //   _noteShot ++;
+      //   _recordNote = true;
+      // }
 
-      _stringStateName = "Pass";
-      _setVoltage = 4_V;
+      // _stringStateName = "Pass";
+      // _setVoltage = -4_V;
     }
     break;
   }
+
   _table->GetEntry("State: ").SetString(_stringStateName);
   _table->GetEntry("Motor Voltage: ").SetDouble(_setVoltage.value());
   _table->GetEntry("Intake Sensor: ").SetBoolean(_config.intakeSensor->Get());

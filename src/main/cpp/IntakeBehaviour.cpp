@@ -12,7 +12,15 @@ IntakeManualControl::IntakeManualControl(Intake* intake, frc::XboxController& co
 
 void IntakeManualControl::OnTick(units::second_t dt) {
 
+  if (_codriver.GetStartButtonReleased()) {
+    std::cout <<"Start2 button is: "<< std::endl;
+  }
+
   if (_codriver.GetBackButtonReleased()) {
+    std::cout <<"Back button is: "<< std::endl;
+  }
+
+  if (_codriver.GetStartButtonReleased()) {
     if (_rawControl) {
       _rawControl = false;
       _intake->SetState(IntakeState::kIdle);

@@ -19,6 +19,10 @@ class IntakeManualControl : public behaviour::Behaviour {
   Intake* _intake;
   frc::XboxController& _codriver;
   bool _rawControl = false;
+
+  std::string _stringStateName = "error";
+
+  std::shared_ptr<nt::NetworkTable> _table = nt::NetworkTableInstance::GetDefault().GetTable("Intake");
 };
 
 class AutoIntake : public behaviour::Behaviour {
